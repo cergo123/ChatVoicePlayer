@@ -15,7 +15,10 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
+import android.os.StrictMode;
+import android.support.v4.content.FileProvider;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +31,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLConnection;
 
-public class VoicePlayerView extends LinearLayout {
+import static android.os.Build.VERSION_CODES.M;
+
+    public class VoicePlayerView extends LinearLayout {
 
     private int playPaueseBackgroundColor, shareBackgroundColor, viewBackgroundColor,
             seekBarProgressColor, seekBarThumbColor, progressTimeColor;
@@ -235,11 +240,12 @@ public class VoicePlayerView extends LinearLayout {
             if (file.exists()){
                 Intent intentShareFile = new Intent(Intent.ACTION_SEND);
                 intentShareFile.setType(URLConnection.guessContentTypeFromName(file.getName()));
-                intentShareFile.putExtra(Intent.EXTRA_STREAM,
-                        Uri.parse("file://"+file.getAbsolutePath()));
-                //if you need
-                //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,"Sharing File Subject);
-                //intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File Description");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+                }
+                    intentShareFile.putExtra(Intent.EXTRA_STREAM,
+                            Uri.parse("file://"+file.getAbsolutePath()));
 
                 context.startActivity(Intent.createChooser(intentShareFile, shareTitle));
             }
