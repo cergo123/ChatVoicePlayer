@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/41321155/56833705-e8f0c180-6877-11e9-88fb-36a3ee17f149.gif"><br>
+  <img src="https://user-images.githubusercontent.com/41321155/56834806-1b4fee00-687b-11e9-9694-e6ce3bc2a94d.png">
+</p>
+
+
 # ChatVoicePlayer
 An Android library to make the implementation of voice/audio messages' playing easier
 
@@ -7,6 +13,7 @@ An Android library to make the implementation of voice/audio messages' playing e
 
 # Features
 - Extremely easy to use
+- Direct share of the audio file
 - Full control of customization (colors, visibilities, shapes) 
 - The controls are availabe in XML and programmatically
 
@@ -33,7 +40,8 @@ Step 2. Add the dependency
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:playPauseBackgroundColor="#4CAF50"
-    app:seekBarProgressColor="#000"
+    app:shareBackgroundColor="#F44336"
+    app:viewBackground="@color/gray"
     app:showShareButton="true"
     app:shareCornerRadius="100"
     app:playPauseCornerRadius="100"
@@ -41,6 +49,7 @@ Step 2. Add the dependency
     app:viewCornerRadius="100"
     app:progressTimeColor="@color/pink"
     app:seekBarThumbColor="#FFC107"
+    app:seekBarProgressColor="#000"
     app:shareText="SHARE ME"/>
 ```
 2. Now prepare your player view wherever you want in your activity: 
