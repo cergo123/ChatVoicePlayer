@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+<me.jagar.chatvoiceplayerlibrary.VoicePlayerView
+    android:id="@+id/voicePlayerView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:playPauseBackgroundColor="#4CAF50"
+    app:seekBarProgressColor="#000"
+    app:showShareButton="true"
+    app:shareCornerRadius="100"
+    app:playPauseCornerRadius="100"
+    app:showTiming="false"
+    app:viewCornerRadius="100"
+    app:progressTimeColor="@color/pink"
+    app:seekBarThumbColor="#FFC107"
+    app:shareText="SHARE ME"/>
+</LinearLayout>
