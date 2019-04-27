@@ -5,7 +5,7 @@
 
 
 # ChatVoicePlayer
-An Android library to make the implementation of voice/audio messages' playing easier
+An Android library to make the implementation of voice/audio messages' playing easier (SDK 16+)
 
 # Why to use this library? 
 - To avoid the unwanted errors of using MediaPlayer in Android
