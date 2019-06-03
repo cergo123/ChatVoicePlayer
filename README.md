@@ -20,21 +20,24 @@ An Android library to make the implementation of voice/audio messages' playing e
 # Installation
 Step 1. Add it in your root build.gradle at the end of repositories:
 
+```groovy
 	allprojects {
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
 		}
 	}
+```
 Step 2. Add the dependency
-
+```groovy
 	dependencies {
 	        implementation 'com.github.JagarYousef:ChatVoicePlayer:1.0.1'
 	}
+```
 
 # Usage
 1. Add the voice player view in your xml layout: 
-```
+```xml
 <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
     android:id="@+id/voicePlayerView"
     android:layout_width="wrap_content"
@@ -53,7 +56,7 @@ Step 2. Add the dependency
     app:shareText="SHARE ME"/>
 ```
 2. Now prepare your player view wherever you want in your activity: 
-```
+```java
 voicePlayerView.setAudio(AUDIO_FILE_PATH);
 ```
 
