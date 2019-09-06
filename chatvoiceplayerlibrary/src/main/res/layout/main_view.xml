@@ -38,6 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtTime"
+                    android:padding="1dp"
                     android:layout_gravity="end"
                     android:layout_marginEnd="16dp"
                     android:textSize="10sp"
@@ -51,6 +52,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:layout_marginLeft="0dp" />
+                <me.jagar.chatvoiceplayerlibrary.PlayerVisualizerSeekbar
+                    android:id="@+id/seekBarV"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_width="225dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="8dp" />
             </LinearLayout>
             <ImageView
                 android:id="@+id/imgShare"
@@ -70,6 +79,7 @@
                 android:id="@+id/progressBar"
                 android:visibility="gone"/>
         </LinearLayout>
+
 
 
 </LinearLayout>

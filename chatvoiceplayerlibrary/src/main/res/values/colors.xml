@@ -3,5 +3,6 @@
     <color name="white">#ffffff</color>
     <color name="pink">#fe485a</color>
     <color name="lightPink">#ef818c</color>
+    <color name="gray">#7C7C7C</color>
 
 </resources>

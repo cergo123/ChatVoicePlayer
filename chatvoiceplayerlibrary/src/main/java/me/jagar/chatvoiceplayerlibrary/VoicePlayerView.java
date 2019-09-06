@@ -18,8 +18,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.v4.content.FileProvider;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,14 +31,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLConnection;
 
-import static android.os.Build.VERSION_CODES.M;
 
     public class VoicePlayerView extends LinearLayout {
 
     private int playPaueseBackgroundColor, shareBackgroundColor, viewBackgroundColor,
-            seekBarProgressColor, seekBarThumbColor, progressTimeColor;
+            seekBarProgressColor, seekBarThumbColor, progressTimeColor, timingBackgroundColor,
+            visualizationPlayedColor, visualizationNotPlayedColor;
     private float viewCornerRadius, playPauseCornerRadius, shareCornerRadius;
-    private boolean showShareButton, showTiming;
+    private boolean showShareButton, showTiming, enableVirtualizer;
     private GradientDrawable playPauseShape, shareShape, viewShape;
     private Context context;
     private String path;
@@ -50,6 +50,8 @@ import static android.os.Build.VERSION_CODES.M;
     private ProgressBar progressBar;
     private TextView txtProcess;
     private MediaPlayer mediaPlayer;
+
+    private PlayerVisualizerSeekbar seekbarV;
 
     public VoicePlayerView(Context context) {
         super(context);
@@ -91,6 +93,11 @@ import static android.os.Build.VERSION_CODES.M;
             seekBarThumbColor = typedArray.getColor(R.styleable.VoicePlayerView_seekBarThumbColor, getResources().getColor(R.color.pink));
             progressTimeColor = typedArray.getColor(R.styleable.VoicePlayerView_progressTimeColor, Color.GRAY);
             shareTitle = typedArray.getString(R.styleable.VoicePlayerView_shareText);
+            enableVirtualizer = typedArray.getBoolean(R.styleable.VoicePlayerView_enableVisualizer, false);
+            timingBackgroundColor = typedArray.getColor(R.styleable.VoicePlayerView_timingBackgroundColor, getResources().getColor(android.R.color.transparent));
+            visualizationNotPlayedColor = typedArray.getColor(R.styleable.VoicePlayerView_visualizationNotPlayedColor, getResources().getColor(R.color.gray));
+            visualizationPlayedColor = typedArray.getColor(R.styleable.VoicePlayerView_visualizationPlayedColor, getResources().getColor(R.color.pink));
+
 
         }finally {
             typedArray.recycle();
@@ -107,6 +114,7 @@ import static android.os.Build.VERSION_CODES.M;
         seekBar = this.findViewById(R.id.seekBar);
         progressBar = this.findViewById(R.id.progressBar);
         txtProcess = this.findViewById(R.id.txtTime);
+        seekbarV = this.findViewById(R.id.seekBarV);
 
 
         viewShape.setColor(viewBackgroundColor);
@@ -122,13 +130,30 @@ import static android.os.Build.VERSION_CODES.M;
         main_layout.setBackground(viewShape);
         seekBar.getProgressDrawable().setColorFilter(seekBarProgressColor, PorterDuff.Mode.SRC_IN);
         seekBar.getThumb().setColorFilter(seekBarThumbColor, PorterDuff.Mode.SRC_IN);
+
+        GradientDrawable timingBackground = new GradientDrawable();
+        timingBackground.setColor(timingBackgroundColor);
+        timingBackground.setCornerRadius(25);
+        txtProcess.setBackground(timingBackground);
+        txtProcess.setPadding(16, 0, 16, 0);
         txtProcess.setTextColor(progressTimeColor);
+
+
+
 
 
         if (!showShareButton)
             imgShare.setVisibility(GONE);
         if (!showTiming)
             txtProcess.setVisibility(INVISIBLE);
+
+        if (enableVirtualizer){
+            seekbarV.setVisibility(VISIBLE);
+            seekBar.setVisibility(GONE);
+            seekbarV.getProgressDrawable().setColorFilter(getResources().getColor(android.R.color.transparent), PorterDuff.Mode.SRC_IN);
+            seekbarV.getThumb().setColorFilter(getResources().getColor(android.R.color.transparent), PorterDuff.Mode.SRC_IN);
+            seekbarV.setColors(visualizationPlayedColor, visualizationNotPlayedColor);
+        }
 
     }
 
@@ -139,7 +164,6 @@ import static android.os.Build.VERSION_CODES.M;
 
         path = AudioPath;
         mediaPlayer =  new MediaPlayer();
-
         if (AudioPath != null) {
             try {
                 mediaPlayer.setDataSource(AudioPath);
@@ -151,6 +175,7 @@ import static android.os.Build.VERSION_CODES.M;
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         seekBar.setMax(mp.getDuration());
+                        seekbarV.setMax(mp.getDuration());
                         txtProcess.setText("00:00:00/"+convertSecondsToHMmSs(mp.getDuration() / 1000));
                     }
                 });
@@ -171,6 +196,10 @@ import static android.os.Build.VERSION_CODES.M;
         imgPlay.setOnClickListener(imgPlayClickListener);
         imgPause.setOnClickListener(imgPauseClickListener);
         imgShare.setOnClickListener(imgShareClickListener);
+
+        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(AudioPath)));
+        seekbarV.setOnSeekBarChangeListener(seekBarListener);
+
     }
 
 
@@ -199,6 +228,8 @@ import static android.os.Build.VERSION_CODES.M;
             if (fromUser)
             {
                 mediaPlayer.seekTo(progress);
+                update(mediaPlayer, txtProcess, seekBar, context);
+                seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition()/mediaPlayer.getDuration());
             }
         }
 
@@ -273,12 +304,20 @@ import static android.os.Build.VERSION_CODES.M;
             @Override
             public void run() {
                 seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                seekbarV.setProgress(mediaPlayer.getCurrentPosition());
+
+
+                seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration());
+
+
                 if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() > 100) {
                     time.setText(convertSecondsToHMmSs(mediaPlayer.getCurrentPosition() / 1000) + " / " + convertSecondsToHMmSs(mediaPlayer.getDuration() / 1000));
                 }
                 else {
                     time.setText(convertSecondsToHMmSs(mediaPlayer.getDuration() / 1000));
                     seekBar.setProgress(0);
+                    seekbarV.updatePlayerPercent(0);
+                    seekbarV.setProgress(0);
                 }
                 Handler handler = new Handler();
                 try{

@@ -13,6 +13,10 @@
         <attr name="playPauseCornerRadius" format="float" />
         <attr name="shareCornerRadius" format="float" />
         <attr name="shareText" format="string" />
+        <attr name="enableVisualizer" format="boolean" />
+        <attr name="timingBackgroundColor" format="color" />
+        <attr name="visualizationPlayedColor" format="color" />
+        <attr name="visualizationNotPlayedColor" format="color" />
 
     </declare-styleable>
 </resources>
