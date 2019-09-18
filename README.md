@@ -1,4 +1,4 @@
-![AppVeyor](https://img.shields.io/appveyor/ci/JagarYousef/chatvoiceplayer) ![GitHub language count](https://img.shields.io/github/languages/count/JagarYousef/ChatVoicePlayer) ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/jagaryousef/chatvoiceplayer)<br><br>
+![AppVeyor](https://img.shields.io/appveyor/ci/JagarYousef/chatvoiceplayer) ![GitHub language count](https://img.shields.io/github/languages/count/JagarYousef/ChatVoicePlayer) ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/jagaryousef/chatvoiceplayer) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/JagarYousef/ChatVoicePlayer)<br><br>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/41321155/56833705-e8f0c180-6877-11e9-88fb-36a3ee17f149.gif"><br><br>
   <img width="300" src="https://user-images.githubusercontent.com/41321155/64449466-a7570980-d0e8-11e9-8c45-02a53951763d.png"><br><br>
