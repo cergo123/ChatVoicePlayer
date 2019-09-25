@@ -22,7 +22,7 @@ An Android library to make the implementation of voice/audio messages' playing e
 - The controls are availabe in XML and programmatically
 - WaveForm Seekbar
 
-# What's new in `1.0.2`
+# What's new in `1.0.3`
 - Adding Waveform Seekbar (Sound Visualization)
 - Adding Timing Background Color
 - Fixing a minor error
@@ -39,7 +39,7 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.JagarYousef:ChatVoicePlayer:1.0.2'
+	        implementation 'com.github.JagarYousef:ChatVoicePlayer:1.0.3'
 	}
 
 # Usage
