@@ -3,6 +3,7 @@ package me.jagar.chatvoiceplayer;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,12 +26,24 @@ public class MainActivity extends AppCompatActivity {
 
         voicePlayerView = findViewById(R.id.voicePlayerView);
         checkPermissions();
-        voicePlayerView.setAudio(Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+
+        final String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3";
+        voicePlayerView.setAudio("none");
         if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3")).exists()){
             Log.e("EXIST", "SONG EXISTS");
         }else{
             Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
         }
+
+        voicePlayerView.showPlayProgressbar();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                voicePlayerView.hidePlayProgresbar();
+                voicePlayerView.refreshPlayer(path);
+            }
+        }, 5000);
     }
 
     private void checkPermissions() {

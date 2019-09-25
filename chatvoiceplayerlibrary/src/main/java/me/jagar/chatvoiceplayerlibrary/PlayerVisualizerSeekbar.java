@@ -110,7 +110,7 @@ public class PlayerVisualizerSeekbar extends android.support.v7.widget.AppCompat
         float barCounter = 0;
         int nextBarNum = 0;
 
-        int y = (height - dp(VISUALIZER_HEIGHT)) / 2;
+        int y = (height - dp(VISUALIZER_HEIGHT)) ;
         int barNum = 0;
         int lastBarNum;
         int drawBarCount;

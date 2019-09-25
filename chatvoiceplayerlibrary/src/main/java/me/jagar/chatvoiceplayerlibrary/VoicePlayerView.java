@@ -36,7 +36,7 @@ import java.net.URLConnection;
 
     private int playPaueseBackgroundColor, shareBackgroundColor, viewBackgroundColor,
             seekBarProgressColor, seekBarThumbColor, progressTimeColor, timingBackgroundColor,
-            visualizationPlayedColor, visualizationNotPlayedColor;
+            visualizationPlayedColor, visualizationNotPlayedColor, playProgressbarColor;
     private float viewCornerRadius, playPauseCornerRadius, shareCornerRadius;
     private boolean showShareButton, showTiming, enableVirtualizer;
     private GradientDrawable playPauseShape, shareShape, viewShape;
@@ -50,6 +50,7 @@ import java.net.URLConnection;
     private ProgressBar progressBar;
     private TextView txtProcess;
     private MediaPlayer mediaPlayer;
+    private ProgressBar pb_play;
 
     private PlayerVisualizerSeekbar seekbarV;
 
@@ -97,6 +98,8 @@ import java.net.URLConnection;
             timingBackgroundColor = typedArray.getColor(R.styleable.VoicePlayerView_timingBackgroundColor, getResources().getColor(android.R.color.transparent));
             visualizationNotPlayedColor = typedArray.getColor(R.styleable.VoicePlayerView_visualizationNotPlayedColor, getResources().getColor(R.color.gray));
             visualizationPlayedColor = typedArray.getColor(R.styleable.VoicePlayerView_visualizationPlayedColor, getResources().getColor(R.color.pink));
+            playProgressbarColor= typedArray.getColor(R.styleable.VoicePlayerView_playProgressbarColor, getResources().getColor(R.color.pink));
+
 
 
         }finally {
@@ -115,6 +118,7 @@ import java.net.URLConnection;
         progressBar = this.findViewById(R.id.progressBar);
         txtProcess = this.findViewById(R.id.txtTime);
         seekbarV = this.findViewById(R.id.seekBarV);
+        pb_play = this.findViewById(R.id.pb_play);
 
 
         viewShape.setColor(viewBackgroundColor);
@@ -139,6 +143,9 @@ import java.net.URLConnection;
         txtProcess.setTextColor(progressTimeColor);
 
 
+        pb_play.getIndeterminateDrawable().setColorFilter(
+                playProgressbarColor,
+                android.graphics.PorterDuff.Mode.SRC_IN);
 
 
 
@@ -160,13 +167,12 @@ import java.net.URLConnection;
 
     //Set the audio source and prepare mediaplayer
 
-    public void setAudio(String AudioPath){
-
-        path = AudioPath;
+    public void setAudio(String audioPath){
+        path = audioPath;
         mediaPlayer =  new MediaPlayer();
-        if (AudioPath != null) {
+        if (path != null) {
             try {
-                mediaPlayer.setDataSource(AudioPath);
+                mediaPlayer.setDataSource(path);
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaPlayer.prepare();
                 mediaPlayer.setVolume(10, 10);
@@ -196,11 +202,11 @@ import java.net.URLConnection;
         imgPlay.setOnClickListener(imgPlayClickListener);
         imgPause.setOnClickListener(imgPauseClickListener);
         imgShare.setOnClickListener(imgShareClickListener);
-
-        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(AudioPath)));
+        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
         seekbarV.setOnSeekBarChangeListener(seekBarListener);
-
+        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
     }
+
 
 
     //Components' listeners
@@ -420,5 +426,59 @@ import java.net.URLConnection;
     }
     public void setShareText(String shareText){
        shareTitle = shareText;
+    }
+
+    public void showPlayProgressbar(){
+        imgPlay.setVisibility(GONE);
+        pb_play.setVisibility(VISIBLE);
+    }
+
+    public void hidePlayProgresbar(){
+        pb_play.setVisibility(GONE);
+        imgPlay.setVisibility(VISIBLE);
+    }
+
+    public void refreshPlayer(String audioPath){
+        path = audioPath;
+        mediaPlayer = null;
+        mediaPlayer =  new MediaPlayer();
+        if (path != null) {
+            try {
+                mediaPlayer.setDataSource(path);
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.prepare();
+                mediaPlayer.setVolume(10, 10);
+                //START and PAUSE are in other listeners
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        seekBar.setMax(mp.getDuration());
+                        seekbarV.setMax(mp.getDuration());
+                        txtProcess.setText("00:00:00/"+convertSecondsToHMmSs(mp.getDuration() / 1000));
+                    }
+                });
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        imgPause.setVisibility(View.GONE);
+                        imgPlay.setVisibility(View.VISIBLE);
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        seekBar.setOnSeekBarChangeListener(seekBarListener);
+        imgPlay.setOnClickListener(imgPlayClickListener);
+        imgPause.setOnClickListener(imgPauseClickListener);
+        imgShare.setOnClickListener(imgShareClickListener);
+        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+        seekbarV.setOnSeekBarChangeListener(seekBarListener);
+        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+    }
+    public ProgressBar getPlayProgressbar(){
+        return pb_play;
     }
 }

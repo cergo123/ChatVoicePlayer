@@ -26,5 +26,6 @@
     app:progressTimeColor="#000"
     app:seekBarThumbColor="#FFC107"
     app:shareBackgroundColor="#ff7700"
+    app:playProgressbarColor="#ff7700"
     app:shareText="SHARE ME"/>
 </LinearLayout>

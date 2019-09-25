@@ -20,6 +20,13 @@
                 android:background="@drawable/play_pause_bg"
                 android:src="@drawable/ic_play_arrow_white_24dp"
                 android:focusable="true" />
+            <ProgressBar
+                android:visibility="gone"
+                android:clickable="true"
+                android:id="@+id/pb_play"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:focusable="true" />
             <ImageView
                 android:clickable="true"
                 android:id="@+id/imgPause"

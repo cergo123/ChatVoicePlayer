@@ -17,6 +17,7 @@
         <attr name="timingBackgroundColor" format="color" />
         <attr name="visualizationPlayedColor" format="color" />
         <attr name="visualizationNotPlayedColor" format="color" />
+        <attr name="playProgressbarColor" format="color" />
 
     </declare-styleable>
 </resources>
