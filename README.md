@@ -1,9 +1,8 @@
-![AppVeyor](https://img.shields.io/appveyor/ci/JagarYousef/chatvoiceplayer) ![GitHub language count](https://img.shields.io/github/languages/count/JagarYousef/ChatVoicePlayer) ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/jagaryousef/chatvoiceplayer) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/JagarYousef/ChatVoicePlayer) ![GitHub](https://img.shields.io/github/license/JagarYousef/ChatVoicePlayer) ![GitHub stars](https://img.shields.io/github/stars/JagarYousef/ChatVoicePlayer) ![GitHub forks](https://img.shields.io/github/forks/JagarYousef/ChatVoicePlayer) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/JagarYousef/ChatVoicePlayer) ![JitPack](https://img.shields.io/jitpack/v/github/JagarYousef/ChatVoicePlayer) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/JagarYousef/ChatVoicePlayer) ![GitHub Release Date](https://img.shields.io/github/release-date/JagarYousef/ChatVoicePlayer)<br><br>
+![AppVeyor](https://img.shields.io/appveyor/ci/JagarYousef/chatvoiceplayer) ![GitHub language count](https://img.shields.io/github/languages/count/JagarYousef/ChatVoicePlayer) ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/jagaryousef/chatvoiceplayer) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/JagarYousef/ChatVoicePlayer) ![GitHub](https://img.shields.io/github/license/JagarYousef/ChatVoicePlayer)  ![JitPack](https://img.shields.io/jitpack/v/github/JagarYousef/ChatVoicePlayer) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/JagarYousef/ChatVoicePlayer) ![GitHub Release Date](https://img.shields.io/github/release-date/JagarYousef/ChatVoicePlayer)<br><br>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/41321155/56833705-e8f0c180-6877-11e9-88fb-36a3ee17f149.gif"><br><br>
   <img width="300" src="https://user-images.githubusercontent.com/41321155/64449466-a7570980-d0e8-11e9-8c45-02a53951763d.png"><br><br>
   <img src="https://user-images.githubusercontent.com/41321155/56834806-1b4fee00-687b-11e9-9694-e6ce3bc2a94d.png">
-
 </p>
 
 
@@ -22,16 +21,10 @@ An Android library to make the implementation of voice/audio messages' playing e
 - The controls are availabe in XML and programmatically
 - WaveForm Seekbar
 
-# What's new in `1.0.2` & above
-- Adding Waveform Seekbar (Sound Visualization)
-- Adding Timing Background Color
-- Fixing a minor error
+# What's new in `1.0.5` 
 
-# What's new in `1.0.4` 
-
-- adding  player Progressabar
-- Waveform seekbar enhancement 
-- Fixing a minor error
+- Replacing all LinearLayouts with ConstraintLayouts.
+- Adding Getters & Setters for all components.
 
 # Installation
 Step 1. Add it in your root build.gradle at the end of repositories:
@@ -45,7 +38,7 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.JagarYousef:ChatVoicePlayer:1.0.4'
+	        implementation 'com.github.JagarYousef:ChatVoicePlayer:1.0.5'
 	}
 
 # Usage

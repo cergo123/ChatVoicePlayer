@@ -2,6 +2,7 @@ package me.jagar.chatvoiceplayerlibrary;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -110,7 +111,7 @@ public class PlayerVisualizerSeekbar extends android.support.v7.widget.AppCompat
         float barCounter = 0;
         int nextBarNum = 0;
 
-        int y = (height - dp(VISUALIZER_HEIGHT)) ;
+        int y = (height - dp(VISUALIZER_HEIGHT));
         int barNum = 0;
         int lastBarNum;
         int drawBarCount;

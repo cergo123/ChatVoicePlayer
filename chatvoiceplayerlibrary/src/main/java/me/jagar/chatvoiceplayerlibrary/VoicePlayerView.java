@@ -1,5 +1,5 @@
     /*
-    This class is a part of Chat Voice Player View Android Library
+    This class is a part of ChatVoicePlayer  Android Library
     Developed by: Jagar Yousef
     Date: 2019
     */
@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ import java.net.URLConnection;
     private String path;
     private String shareTitle = "Share Voice";
 
-    private LinearLayout main_layout, padded_layout, container_layout;
+    private ConstraintLayout main_layout, padded_layout, container_layout;
     private ImageView imgPlay, imgPause, imgShare;
     private SeekBar seekBar;
     private ProgressBar progressBar;
@@ -150,13 +151,13 @@ import java.net.URLConnection;
 
 
         if (!showShareButton)
-            imgShare.setVisibility(GONE);
+            imgShare.setVisibility(INVISIBLE);
         if (!showTiming)
             txtProcess.setVisibility(INVISIBLE);
 
         if (enableVirtualizer){
             seekbarV.setVisibility(VISIBLE);
-            seekBar.setVisibility(GONE);
+            seekBar.setVisibility(INVISIBLE);
             seekbarV.getProgressDrawable().setColorFilter(getResources().getColor(android.R.color.transparent), PorterDuff.Mode.SRC_IN);
             seekbarV.getThumb().setColorFilter(getResources().getColor(android.R.color.transparent), PorterDuff.Mode.SRC_IN);
             seekbarV.setColors(visualizationPlayedColor, visualizationNotPlayedColor);
@@ -188,7 +189,7 @@ import java.net.URLConnection;
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        imgPause.setVisibility(View.GONE);
+                        imgPause.setVisibility(View.INVISIBLE);
                         imgPlay.setVisibility(View.VISIBLE);
                     }
                 });
@@ -215,7 +216,7 @@ import java.net.URLConnection;
         @Override
         public void onClick(View v) {
             imgPause.setVisibility(View.VISIBLE);
-            imgPlay.setVisibility(View.GONE);
+            imgPlay.setVisibility(View.INVISIBLE);
             mediaPlayer.start();
             try{
                 update(mediaPlayer, txtProcess, seekBar, context);
@@ -241,13 +242,13 @@ import java.net.URLConnection;
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-            imgPause.setVisibility(View.GONE);
+            imgPause.setVisibility(View.INVISIBLE);
             imgPlay.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            imgPlay.setVisibility(View.GONE);
+            imgPlay.setVisibility(View.INVISIBLE);
             imgPause.setVisibility(View.VISIBLE);
             mediaPlayer.start();
 
@@ -257,7 +258,7 @@ import java.net.URLConnection;
     View.OnClickListener imgPauseClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            imgPause.setVisibility(View.GONE);
+            imgPause.setVisibility(View.INVISIBLE);
             imgPlay.setVisibility(View.VISIBLE);
             mediaPlayer.pause();
         }
@@ -481,4 +482,306 @@ import java.net.URLConnection;
     public ProgressBar getPlayProgressbar(){
         return pb_play;
     }
-}
+
+
+        public int getPlayPaueseBackgroundColor() {
+            return playPaueseBackgroundColor;
+        }
+
+        public void setPlayPaueseBackgroundColor(int playPaueseBackgroundColor) {
+            this.playPaueseBackgroundColor = playPaueseBackgroundColor;
+        }
+
+        public int getShareBackgroundColor() {
+            return shareBackgroundColor;
+        }
+
+        public void setShareBackgroundColor(int shareBackgroundColor) {
+            this.shareBackgroundColor = shareBackgroundColor;
+        }
+
+        public int getViewBackgroundColor() {
+            return viewBackgroundColor;
+        }
+
+        public void setViewBackgroundColor(int viewBackgroundColor) {
+            this.viewBackgroundColor = viewBackgroundColor;
+        }
+
+        public int getSeekBarProgressColor() {
+            return seekBarProgressColor;
+        }
+
+        public void setSeekBarProgressColor(int seekBarProgressColor) {
+            this.seekBarProgressColor = seekBarProgressColor;
+        }
+
+        public int getSeekBarThumbColor() {
+            return seekBarThumbColor;
+        }
+
+        public void setSeekBarThumbColor(int seekBarThumbColor) {
+            this.seekBarThumbColor = seekBarThumbColor;
+        }
+
+        public int getProgressTimeColor() {
+            return progressTimeColor;
+        }
+
+        public void setProgressTimeColor(int progressTimeColor) {
+            this.progressTimeColor = progressTimeColor;
+        }
+
+        public int getTimingBackgroundColor() {
+            return timingBackgroundColor;
+        }
+
+        public void setTimingBackgroundColor(int timingBackgroundColor) {
+            this.timingBackgroundColor = timingBackgroundColor;
+        }
+
+        public int getVisualizationPlayedColor() {
+            return visualizationPlayedColor;
+        }
+
+        public void setVisualizationPlayedColor(int visualizationPlayedColor) {
+            this.visualizationPlayedColor = visualizationPlayedColor;
+        }
+
+        public int getVisualizationNotPlayedColor() {
+            return visualizationNotPlayedColor;
+        }
+
+        public void setVisualizationNotPlayedColor(int visualizationNotPlayedColor) {
+            this.visualizationNotPlayedColor = visualizationNotPlayedColor;
+        }
+
+        public int getPlayProgressbarColor() {
+            return playProgressbarColor;
+        }
+
+        public void setPlayProgressbarColor(int playProgressbarColor) {
+            this.playProgressbarColor = playProgressbarColor;
+        }
+
+        public float getViewCornerRadius() {
+            return viewCornerRadius;
+        }
+
+        public void setViewCornerRadius(float viewCornerRadius) {
+            this.viewCornerRadius = viewCornerRadius;
+        }
+
+        public float getPlayPauseCornerRadius() {
+            return playPauseCornerRadius;
+        }
+
+        public void setPlayPauseCornerRadius(float playPauseCornerRadius) {
+            this.playPauseCornerRadius = playPauseCornerRadius;
+        }
+
+        public float getShareCornerRadius() {
+            return shareCornerRadius;
+        }
+
+        public void setShareCornerRadius(float shareCornerRadius) {
+            this.shareCornerRadius = shareCornerRadius;
+        }
+
+        public boolean isShowShareButton() {
+            return showShareButton;
+        }
+
+        public void setShowShareButton(boolean showShareButton) {
+            this.showShareButton = showShareButton;
+        }
+
+        public boolean isShowTiming() {
+            return showTiming;
+        }
+
+        public void setShowTiming(boolean showTiming) {
+            this.showTiming = showTiming;
+        }
+
+        public boolean isEnableVirtualizer() {
+            return enableVirtualizer;
+        }
+
+        public void setEnableVirtualizer(boolean enableVirtualizer) {
+            this.enableVirtualizer = enableVirtualizer;
+        }
+
+        public GradientDrawable getPlayPauseShape() {
+            return playPauseShape;
+        }
+
+        public void setPlayPauseShape(GradientDrawable playPauseShape) {
+            this.playPauseShape = playPauseShape;
+        }
+
+        public GradientDrawable getShareShape() {
+            return shareShape;
+        }
+
+        public void setShareShape(GradientDrawable shareShape) {
+            this.shareShape = shareShape;
+        }
+
+        public GradientDrawable getViewShape() {
+            return viewShape;
+        }
+
+        public void setViewShape(GradientDrawable viewShape) {
+            this.viewShape = viewShape;
+        }
+
+
+        public void setContext(Context context) {
+            this.context = context;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public String getShareTitle() {
+            return shareTitle;
+        }
+
+        public void setShareTitle(String shareTitle) {
+            this.shareTitle = shareTitle;
+        }
+
+        public ConstraintLayout getMain_layout() {
+            return main_layout;
+        }
+
+        public void setMain_layout(ConstraintLayout main_layout) {
+            this.main_layout = main_layout;
+        }
+
+        public ConstraintLayout getPadded_layout() {
+            return padded_layout;
+        }
+
+        public void setPadded_layout(ConstraintLayout padded_layout) {
+            this.padded_layout = padded_layout;
+        }
+
+        public ConstraintLayout getContainer_layout() {
+            return container_layout;
+        }
+
+        public void setContainer_layout(ConstraintLayout container_layout) {
+            this.container_layout = container_layout;
+        }
+
+        public ImageView getImgPlay() {
+            return imgPlay;
+        }
+
+        public void setImgPlay(ImageView imgPlay) {
+            this.imgPlay = imgPlay;
+        }
+
+        public ImageView getImgPause() {
+            return imgPause;
+        }
+
+        public void setImgPause(ImageView imgPause) {
+            this.imgPause = imgPause;
+        }
+
+        public ImageView getImgShare() {
+            return imgShare;
+        }
+
+        public void setImgShare(ImageView imgShare) {
+            this.imgShare = imgShare;
+        }
+
+        public SeekBar getSeekBar() {
+            return seekBar;
+        }
+
+        public void setSeekBar(SeekBar seekBar) {
+            this.seekBar = seekBar;
+        }
+
+        public ProgressBar getProgressBar() {
+            return progressBar;
+        }
+
+        public void setProgressBar(ProgressBar progressBar) {
+            this.progressBar = progressBar;
+        }
+
+        public TextView getTxtProcess() {
+            return txtProcess;
+        }
+
+        public void setTxtProcess(TextView txtProcess) {
+            this.txtProcess = txtProcess;
+        }
+
+        public MediaPlayer getMediaPlayer() {
+            return mediaPlayer;
+        }
+
+        public void setMediaPlayer(MediaPlayer mediaPlayer) {
+            this.mediaPlayer = mediaPlayer;
+        }
+
+        public ProgressBar getPb_play() {
+            return pb_play;
+        }
+
+        public void setPb_play(ProgressBar pb_play) {
+            this.pb_play = pb_play;
+        }
+
+        public PlayerVisualizerSeekbar getSeekbarV() {
+            return seekbarV;
+        }
+
+        public void setSeekbarV(PlayerVisualizerSeekbar seekbarV) {
+            this.seekbarV = seekbarV;
+        }
+
+        public OnClickListener getImgPlayClickListener() {
+            return imgPlayClickListener;
+        }
+
+        public void setImgPlayClickListener(OnClickListener imgPlayClickListener) {
+            this.imgPlayClickListener = imgPlayClickListener;
+        }
+
+        public SeekBar.OnSeekBarChangeListener getSeekBarListener() {
+            return seekBarListener;
+        }
+
+        public void setSeekBarListener(SeekBar.OnSeekBarChangeListener seekBarListener) {
+            this.seekBarListener = seekBarListener;
+        }
+
+        public OnClickListener getImgPauseClickListener() {
+            return imgPauseClickListener;
+        }
+
+        public void setImgPauseClickListener(OnClickListener imgPauseClickListener) {
+            this.imgPauseClickListener = imgPauseClickListener;
+        }
+
+        public OnClickListener getImgShareClickListener() {
+            return imgShareClickListener;
+        }
+
+        public void setImgShareClickListener(OnClickListener imgShareClickListener) {
+            this.imgShareClickListener = imgShareClickListener;
+        }
+    }
