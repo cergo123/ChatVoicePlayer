@@ -21,7 +21,7 @@ An Android library to make the implementation of voice/audio messages' playing e
 - The controls are availabe in XML and programmatically
 - WaveForm Seekbar
 
-# What's new in `1.0.5` 
+# What's new in `1.0.6` 
 
 - Adding Getters & Setters for all components.
 
@@ -37,7 +37,7 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.JagarYousef:ChatVoicePlayer:v1.0.5'
+	        implementation 'com.github.JagarYousef:ChatVoicePlayer:1.0.6'
 	}
 
 # Usage
