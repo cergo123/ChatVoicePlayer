@@ -23,7 +23,6 @@ An Android library to make the implementation of voice/audio messages' playing e
 
 # What's new in `1.0.5` 
 
-- Replacing all LinearLayouts with ConstraintLayouts.
 - Adding Getters & Setters for all components.
 
 # Installation

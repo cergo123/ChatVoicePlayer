@@ -1,5 +1,5 @@
     /*
-    This class is a part of ChatVoicePlayer  Android Library
+    This class is a part of Chat Voice Player View Android Library
     Developed by: Jagar Yousef
     Date: 2019
     */
@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +44,7 @@ import java.net.URLConnection;
     private String path;
     private String shareTitle = "Share Voice";
 
-    private ConstraintLayout main_layout, padded_layout, container_layout;
+    private LinearLayout main_layout, padded_layout, container_layout;
     private ImageView imgPlay, imgPause, imgShare;
     private SeekBar seekBar;
     private ProgressBar progressBar;
@@ -151,13 +150,13 @@ import java.net.URLConnection;
 
 
         if (!showShareButton)
-            imgShare.setVisibility(INVISIBLE);
+            imgShare.setVisibility(GONE);
         if (!showTiming)
             txtProcess.setVisibility(INVISIBLE);
 
         if (enableVirtualizer){
             seekbarV.setVisibility(VISIBLE);
-            seekBar.setVisibility(INVISIBLE);
+            seekBar.setVisibility(GONE);
             seekbarV.getProgressDrawable().setColorFilter(getResources().getColor(android.R.color.transparent), PorterDuff.Mode.SRC_IN);
             seekbarV.getThumb().setColorFilter(getResources().getColor(android.R.color.transparent), PorterDuff.Mode.SRC_IN);
             seekbarV.setColors(visualizationPlayedColor, visualizationNotPlayedColor);
@@ -189,7 +188,7 @@ import java.net.URLConnection;
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        imgPause.setVisibility(View.INVISIBLE);
+                        imgPause.setVisibility(View.GONE);
                         imgPlay.setVisibility(View.VISIBLE);
                     }
                 });
@@ -216,7 +215,7 @@ import java.net.URLConnection;
         @Override
         public void onClick(View v) {
             imgPause.setVisibility(View.VISIBLE);
-            imgPlay.setVisibility(View.INVISIBLE);
+            imgPlay.setVisibility(View.GONE);
             mediaPlayer.start();
             try{
                 update(mediaPlayer, txtProcess, seekBar, context);
@@ -242,13 +241,13 @@ import java.net.URLConnection;
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-            imgPause.setVisibility(View.INVISIBLE);
+            imgPause.setVisibility(View.GONE);
             imgPlay.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            imgPlay.setVisibility(View.INVISIBLE);
+            imgPlay.setVisibility(View.GONE);
             imgPause.setVisibility(View.VISIBLE);
             mediaPlayer.start();
 
@@ -258,7 +257,7 @@ import java.net.URLConnection;
     View.OnClickListener imgPauseClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            imgPause.setVisibility(View.INVISIBLE);
+            imgPause.setVisibility(View.GONE);
             imgPlay.setVisibility(View.VISIBLE);
             mediaPlayer.pause();
         }
@@ -439,50 +438,12 @@ import java.net.URLConnection;
         imgPlay.setVisibility(VISIBLE);
     }
 
-    public void refreshPlayer(String audioPath){
-        path = audioPath;
-        mediaPlayer = null;
-        mediaPlayer =  new MediaPlayer();
-        if (path != null) {
-            try {
-                mediaPlayer.setDataSource(path);
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mediaPlayer.prepare();
-                mediaPlayer.setVolume(10, 10);
-                //START and PAUSE are in other listeners
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        seekBar.setMax(mp.getDuration());
-                        seekbarV.setMax(mp.getDuration());
-                        txtProcess.setText("00:00:00/"+convertSecondsToHMmSs(mp.getDuration() / 1000));
-                    }
-                });
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        imgPause.setVisibility(View.GONE);
-                        imgPlay.setVisibility(View.VISIBLE);
-                    }
-                });
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        seekBar.setOnSeekBarChangeListener(seekBarListener);
-        imgPlay.setOnClickListener(imgPlayClickListener);
-        imgPause.setOnClickListener(imgPauseClickListener);
-        imgShare.setOnClickListener(imgShareClickListener);
-        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
-        seekbarV.setOnSeekBarChangeListener(seekBarListener);
+    public void refreshVisualizer(){
         seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
     }
     public ProgressBar getPlayProgressbar(){
         return pb_play;
     }
-
 
         public int getPlayPaueseBackgroundColor() {
             return playPaueseBackgroundColor;
@@ -636,7 +597,6 @@ import java.net.URLConnection;
             this.viewShape = viewShape;
         }
 
-
         public void setContext(Context context) {
             this.context = context;
         }
@@ -657,27 +617,27 @@ import java.net.URLConnection;
             this.shareTitle = shareTitle;
         }
 
-        public ConstraintLayout getMain_layout() {
+        public LinearLayout getMain_layout() {
             return main_layout;
         }
 
-        public void setMain_layout(ConstraintLayout main_layout) {
+        public void setMain_layout(LinearLayout main_layout) {
             this.main_layout = main_layout;
         }
 
-        public ConstraintLayout getPadded_layout() {
+        public LinearLayout getPadded_layout() {
             return padded_layout;
         }
 
-        public void setPadded_layout(ConstraintLayout padded_layout) {
+        public void setPadded_layout(LinearLayout padded_layout) {
             this.padded_layout = padded_layout;
         }
 
-        public ConstraintLayout getContainer_layout() {
+        public LinearLayout getContainer_layout() {
             return container_layout;
         }
 
-        public void setContainer_layout(ConstraintLayout container_layout) {
+        public void setContainer_layout(LinearLayout container_layout) {
             this.container_layout = container_layout;
         }
 
