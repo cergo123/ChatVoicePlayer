@@ -181,7 +181,9 @@ import java.net.URLConnection;
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         seekBar.setMax(mp.getDuration());
-                        seekbarV.setMax(mp.getDuration());
+                        if (seekbarV.getVisibility() == VISIBLE){
+                            seekbarV.setMax(mp.getDuration());
+                        }
                         txtProcess.setText("00:00:00/"+convertSecondsToHMmSs(mp.getDuration() / 1000));
                     }
                 });
@@ -202,7 +204,9 @@ import java.net.URLConnection;
         imgPlay.setOnClickListener(imgPlayClickListener);
         imgPause.setOnClickListener(imgPauseClickListener);
         imgShare.setOnClickListener(imgShareClickListener);
-        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+        if (seekbarV.getVisibility() == VISIBLE){
+            seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+        }
         seekbarV.setOnSeekBarChangeListener(seekBarListener);
         seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
     }
@@ -235,7 +239,9 @@ import java.net.URLConnection;
             {
                 mediaPlayer.seekTo(progress);
                 update(mediaPlayer, txtProcess, seekBar, context);
-                seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition()/mediaPlayer.getDuration());
+                if (seekbarV.getVisibility() == VISIBLE){
+                    seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition()/mediaPlayer.getDuration());
+                }
             }
         }
 
@@ -310,10 +316,11 @@ import java.net.URLConnection;
             @Override
             public void run() {
                 seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                seekbarV.setProgress(mediaPlayer.getCurrentPosition());
+                if (seekbarV.getVisibility() == VISIBLE){
+                    seekbarV.setProgress(mediaPlayer.getCurrentPosition());
+                    seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration());
+                }
 
-
-                seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration());
 
 
                 if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() > 100) {
@@ -322,8 +329,10 @@ import java.net.URLConnection;
                 else {
                     time.setText(convertSecondsToHMmSs(mediaPlayer.getDuration() / 1000));
                     seekBar.setProgress(0);
-                    seekbarV.updatePlayerPercent(0);
-                    seekbarV.setProgress(0);
+                    if (seekbarV.getVisibility() == VISIBLE){
+                        seekbarV.updatePlayerPercent(0);
+                        seekbarV.setProgress(0);
+                    }
                 }
                 Handler handler = new Handler();
                 try{
@@ -438,8 +447,56 @@ import java.net.URLConnection;
         imgPlay.setVisibility(VISIBLE);
     }
 
+        public void refreshPlayer(String audioPath){
+            path = audioPath;
+            mediaPlayer = null;
+            mediaPlayer =  new MediaPlayer();
+            if (path != null) {
+                try {
+                    mediaPlayer.setDataSource(path);
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mediaPlayer.prepare();
+                    mediaPlayer.setVolume(10, 10);
+                    //START and PAUSE are in other listeners
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            seekBar.setMax(mp.getDuration());
+                            if (seekbarV.getVisibility() == VISIBLE){
+                                seekbarV.setMax(mp.getDuration());
+                            }
+                            txtProcess.setText("00:00:00/"+convertSecondsToHMmSs(mp.getDuration() / 1000));
+                        }
+                    });
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            imgPause.setVisibility(View.GONE);
+                            imgPlay.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            seekBar.setOnSeekBarChangeListener(seekBarListener);
+            imgPlay.setOnClickListener(imgPlayClickListener);
+            imgPause.setOnClickListener(imgPauseClickListener);
+            imgShare.setOnClickListener(imgShareClickListener);
+            if (seekbarV.getVisibility() == VISIBLE){
+                seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+                seekbarV.setOnSeekBarChangeListener(seekBarListener);
+                seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+            }
+        }
+
+
     public void refreshVisualizer(){
-        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+        if (seekbarV.getVisibility() == VISIBLE){
+            seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+        }
     }
     public ProgressBar getPlayProgressbar(){
         return pb_play;

@@ -27,15 +27,19 @@ public class MainActivity extends AppCompatActivity {
         voicePlayerView = findViewById(R.id.voicePlayerView);
         checkPermissions();
 
+        long startTime = System.currentTimeMillis();
         final String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3";
         voicePlayerView.setAudio("none");
         if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3")).exists()){
             Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView.setAudio(path);
         }else{
             Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
         }
 
-        voicePlayerView.showPlayProgressbar();
+        long endTime = System.currentTimeMillis();
+        Log.e("Time", String.valueOf(endTime - startTime));
+        /*voicePlayerView.showPlayProgressbar();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 voicePlayerView.hidePlayProgresbar();
                 voicePlayerView.refreshPlayer(path);
             }
-        }, 5000);
+        }, 5000);*/
     }
 
     private void checkPermissions() {
