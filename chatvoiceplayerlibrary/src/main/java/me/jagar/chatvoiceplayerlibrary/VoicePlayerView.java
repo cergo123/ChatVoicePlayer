@@ -315,6 +315,20 @@ import java.net.URLConnection;
                 shareIntent.setDataAndType(contentUri, context.getContentResolver().getType(contentUri));
                 shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
                 ((Activity) context).startActivity(Intent.createChooser(shareIntent, shareTitle));
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((Activity) context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(GONE);
+                                imgShare.setVisibility(VISIBLE);
+                            }
+                        });
+
+                    }
+                }, 500);
             }
 
         }
