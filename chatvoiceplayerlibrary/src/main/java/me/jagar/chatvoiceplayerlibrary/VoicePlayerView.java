@@ -53,6 +53,7 @@ import java.net.URLConnection;
     private ProgressBar pb_play;
 
     private PlayerVisualizerSeekbar seekbarV;
+    private Uri contentUri = null;
 
     public VoicePlayerView(Context context) {
         super(context);
@@ -279,33 +280,42 @@ import java.net.URLConnection;
                     progressBar.setVisibility(VISIBLE);
                 }
             });
-            File file = new File(path);
-            if (file.exists()){
-                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                intentShareFile.setType(URLConnection.guessContentTypeFromName(file.getName()));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    StrictMode.setVmPolicy(builder.build());
-                }
-                    intentShareFile.putExtra(Intent.EXTRA_STREAM,
-                            Uri.parse("file://"+file.getAbsolutePath()));
+            if (contentUri == null){
+                    File file = new File(path);
+                    if (file.exists()){
+                        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                        intentShareFile.setType(URLConnection.guessContentTypeFromName(file.getName()));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                            StrictMode.setVmPolicy(builder.build());
+                        }
+                            intentShareFile.putExtra(Intent.EXTRA_STREAM,
+                                    Uri.parse("file://"+file.getAbsolutePath()));
 
-                context.startActivity(Intent.createChooser(intentShareFile, shareTitle));
-            }
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ((Activity) context).runOnUiThread(new Runnable() {
+                        context.startActivity(Intent.createChooser(intentShareFile, shareTitle));
+                    }
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(GONE);
-                            imgShare.setVisibility(VISIBLE);
-                        }
-                    });
+                            ((Activity) context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressBar.setVisibility(GONE);
+                                    imgShare.setVisibility(VISIBLE);
+                                }
+                            });
 
-                }
-            }, 500);
+                        }
+                    }, 500);
+            }else  {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // temp permission for receiving app to read this file
+                shareIntent.setDataAndType(contentUri, context.getContentResolver().getType(contentUri));
+                shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                ((Activity) context).startActivity(Intent.createChooser(shareIntent, shareTitle));
+            }
 
         }
     };
@@ -801,4 +811,14 @@ import java.net.URLConnection;
         public void setImgShareClickListener(OnClickListener imgShareClickListener) {
             this.imgShareClickListener = imgShareClickListener;
         }
+
+        public Uri getContentUri() {
+            return contentUri;
+        }
+
+        public void setContentUri(Uri contentUri) {
+            this.contentUri = contentUri;
+        }
     }
+
+
