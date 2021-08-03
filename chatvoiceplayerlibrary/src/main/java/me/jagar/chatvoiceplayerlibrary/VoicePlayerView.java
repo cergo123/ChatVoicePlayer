@@ -206,10 +206,10 @@ import java.net.URLConnection;
         imgPause.setOnClickListener(imgPauseClickListener);
         imgShare.setOnClickListener(imgShareClickListener);
         if (seekbarV.getVisibility() == VISIBLE){
-            seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+            seekbarV.updateVisualizer(new File(path));
         }
         seekbarV.setOnSeekBarChangeListener(seekBarListener);
-        seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+        seekbarV.updateVisualizer(new File(path));
     }
 
 
@@ -219,10 +219,18 @@ import java.net.URLConnection;
     View.OnClickListener imgPlayClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            imgPause.setVisibility(View.VISIBLE);
-            imgPlay.setVisibility(View.GONE);
-            mediaPlayer.start();
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    imgPause.setVisibility(View.VISIBLE);
+                    imgPlay.setVisibility(View.GONE);
+                }
+            });
+
             try{
+                if (mediaPlayer != null){
+                    mediaPlayer.start();
+                }
                 update(mediaPlayer, txtProcess, seekBar, context);
             }catch (Exception e){
                 e.printStackTrace();
@@ -235,28 +243,46 @@ import java.net.URLConnection;
 
     private SeekBar.OnSeekBarChangeListener seekBarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser)
-            {
-                mediaPlayer.seekTo(progress);
-                update(mediaPlayer, txtProcess, seekBar, context);
-                if (seekbarV.getVisibility() == VISIBLE){
-                    seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition()/mediaPlayer.getDuration());
-                }
+        public void onProgressChanged(final SeekBar seekBar, final int progress, boolean fromUser) {
+            if (fromUser) {
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mediaPlayer.seekTo(progress);
+                        update(mediaPlayer, txtProcess, seekBar, context);
+                        if (seekbarV.getVisibility() == VISIBLE){
+                            seekbarV.updatePlayerPercent((float) mediaPlayer.getCurrentPosition()/mediaPlayer.getDuration());
+                        }
+                    }
+                });
             }
         }
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-            imgPause.setVisibility(View.GONE);
-            imgPlay.setVisibility(View.VISIBLE);
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    imgPause.setVisibility(View.GONE);
+                    imgPlay.setVisibility(View.VISIBLE);
+                }
+            });
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            imgPlay.setVisibility(View.GONE);
-            imgPause.setVisibility(View.VISIBLE);
-            mediaPlayer.start();
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    imgPlay.setVisibility(View.GONE);
+                    imgPause.setVisibility(View.VISIBLE);
+                    try{
+                        mediaPlayer.start();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
 
         }
     };
@@ -264,9 +290,19 @@ import java.net.URLConnection;
     View.OnClickListener imgPauseClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            imgPause.setVisibility(View.GONE);
-            imgPlay.setVisibility(View.VISIBLE);
-            mediaPlayer.pause();
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    imgPause.setVisibility(View.GONE);
+                    imgPlay.setVisibility(View.VISIBLE);
+                    try{
+                        mediaPlayer.pause();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         }
     };
 
@@ -364,7 +400,7 @@ import java.net.URLConnection;
                             }
                         }
                     };
-                    handler.postDelayed(runnable, 2);
+                    handler.postDelayed(runnable, 500);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -403,8 +439,13 @@ import java.net.URLConnection;
         }catch (Exception e){
             e.printStackTrace();
         }
-        imgPause.setVisibility(View.GONE);
-        imgPlay.setVisibility(View.VISIBLE);
+        ((Activity) context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                imgPause.setVisibility(View.GONE);
+                imgPlay.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 
@@ -461,6 +502,16 @@ import java.net.URLConnection;
 
         public void refreshPlayer(String audioPath){
             path = audioPath;
+            if (mediaPlayer != null){
+                try{
+                    if (mediaPlayer.isPlaying()){
+                    mediaPlayer.stop();
+                }
+                mediaPlayer.release();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
             mediaPlayer = null;
             mediaPlayer =  new MediaPlayer();
             if (path != null) {
@@ -472,19 +523,36 @@ import java.net.URLConnection;
                     //START and PAUSE are in other listeners
                     mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            seekBar.setMax(mp.getDuration());
-                            if (seekbarV.getVisibility() == VISIBLE){
-                                seekbarV.setMax(mp.getDuration());
-                            }
-                            txtProcess.setText("00:00:00/"+convertSecondsToHMmSs(mp.getDuration() / 1000));
+                        public void onPrepared(final MediaPlayer mp) {
+                            ((Activity) context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    seekBar.setMax(mp.getDuration());
+                                    seekBar.setProgress(0);
+                                    if (seekbarV.getVisibility() == VISIBLE){
+                                        seekbarV.setMax(mp.getDuration());
+                                        seekbarV.setProgress(0);
+                                    }
+
+                                    if (imgPause.getVisibility() == View.VISIBLE){
+                                        imgPause.setVisibility(View.GONE);
+                                        imgPlay.setVisibility(View.VISIBLE);
+                                    }
+                                    txtProcess.setText("00:00:00/"+convertSecondsToHMmSs(mp.getDuration() / 1000));
+                                }
+                            });
                         }
                     });
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            imgPause.setVisibility(View.GONE);
-                            imgPlay.setVisibility(View.VISIBLE);
+                            ((Activity) context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    imgPause.setVisibility(View.GONE);
+                                    imgPlay.setVisibility(View.VISIBLE);
+                                }
+                            });
                         }
                     });
 
@@ -493,21 +561,32 @@ import java.net.URLConnection;
                 }
             }
 
-            seekBar.setOnSeekBarChangeListener(seekBarListener);
-            imgPlay.setOnClickListener(imgPlayClickListener);
-            imgPause.setOnClickListener(imgPauseClickListener);
-            imgShare.setOnClickListener(imgShareClickListener);
-            if (seekbarV.getVisibility() == VISIBLE){
-                seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
-                seekbarV.setOnSeekBarChangeListener(seekBarListener);
-                seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
-            }
+
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    seekBar.setOnSeekBarChangeListener(seekBarListener);
+                    imgPlay.setOnClickListener(imgPlayClickListener);
+                    imgPause.setOnClickListener(imgPauseClickListener);
+                    imgShare.setOnClickListener(imgShareClickListener);
+                    if (seekbarV.getVisibility() == VISIBLE){
+                        seekbarV.updateVisualizer(new File(path));
+                        seekbarV.setOnSeekBarChangeListener(seekBarListener);
+                        seekbarV.updateVisualizer(new File(path));
+                    }
+                }
+            });
+
+            seekBar.invalidate();
+            seekbarV.invalidate();
+            this.invalidate();
         }
 
 
     public void refreshVisualizer(){
         if (seekbarV.getVisibility() == VISIBLE){
-            seekbarV.updateVisualizer(FileUtils.fileToBytes(new File(path)));
+            seekbarV.updateVisualizer(new File(path));
         }
     }
     public ProgressBar getPlayProgressbar(){

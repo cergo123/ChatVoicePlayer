@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
+import java.io.File;
+
 public class PlayerVisualizerSeekbar extends android.support.v7.widget.AppCompatSeekBar{
 
     /**
@@ -66,9 +68,12 @@ public class PlayerVisualizerSeekbar extends android.support.v7.widget.AppCompat
     /**
      * update and redraw Visualizer view
      */
-    public void updateVisualizer(byte[] bytes) {
+    public void updateVisualizer(File file) {
+
+        FileUtils.updateVisualizer(getContext(), file, this);
+    }
+    public void setBytes(byte[] bytes){
         this.bytes = bytes;
-        invalidate();
     }
 
     /**

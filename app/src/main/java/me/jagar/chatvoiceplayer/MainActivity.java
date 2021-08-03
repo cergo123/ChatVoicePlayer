@@ -9,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.io.File;
 
@@ -16,7 +18,9 @@ import me.jagar.chatvoiceplayerlibrary.VoicePlayerView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private VoicePlayerView voicePlayerView;
+    private VoicePlayerView voicePlayerView, voicePlayerView2, voicePlayerView3, voicePlayerView4, voicePlayerView5,
+            voicePlayerView6, voicePlayerView7;
+    private Button btn_refresh;
     private static final int MY_PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE = 100;
 
     @Override
@@ -25,20 +29,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         voicePlayerView = findViewById(R.id.voicePlayerView);
+        voicePlayerView2 = findViewById(R.id.voicePlayerView2);
+        voicePlayerView3 = findViewById(R.id.voicePlayerView3);
+        voicePlayerView4 = findViewById(R.id.voicePlayerView4);
+        voicePlayerView5 = findViewById(R.id.voicePlayerView5);
+        voicePlayerView6 = findViewById(R.id.voicePlayerView6);
+        voicePlayerView7 = findViewById(R.id.voicePlayerView7);
+        btn_refresh = findViewById(R.id.btn_refresh);
+
         checkPermissions();
 
-        long startTime = System.currentTimeMillis();
-        final String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3";
-        voicePlayerView.setAudio("none");
-        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3")).exists()){
-            Log.e("EXIST", "SONG EXISTS");
-            voicePlayerView.setAudio(path);
-        }else{
-            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+            initPlayers();
         }
 
-        long endTime = System.currentTimeMillis();
-        Log.e("Time", String.valueOf(endTime - startTime));
+        btn_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED){
+                    refershPlayers();
+                }
+            }
+        });
+
+
         /*voicePlayerView.showPlayProgressbar();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -48,6 +66,101 @@ public class MainActivity extends AppCompatActivity {
                 voicePlayerView.refreshPlayer(path);
             }
         }, 5000);*/
+    }
+
+    private void refershPlayers(){
+        long startTime = System.currentTimeMillis();
+        final String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3";
+        voicePlayerView.refreshPlayer("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView.refreshPlayer(path);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path2 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3";
+        voicePlayerView2.refreshPlayer("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView2.refreshPlayer(path);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path3 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3";
+        voicePlayerView3.refreshPlayer("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView3.refreshPlayer(path);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path4 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3";
+        voicePlayerView4.refreshPlayer("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView4.refreshPlayer(path3);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path5 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3";
+        voicePlayerView5.refreshPlayer("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView5.refreshPlayer(path2);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+
+        long endTime = System.currentTimeMillis();
+        Log.e("Time", String.valueOf(endTime - startTime));
+    }
+
+
+    private void initPlayers(){
+        long startTime = System.currentTimeMillis();
+        final String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3";
+        voicePlayerView.setAudio("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView.setAudio(path);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path2 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3";
+        voicePlayerView2.setAudio("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView2.setAudio(path2);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path3 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3";
+        voicePlayerView3.setAudio("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView3.setAudio(path3);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path4 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3";
+        voicePlayerView4.setAudio("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s3.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView4.setAudio(path4);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+        final String path5 = Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3";
+        voicePlayerView5.setAudio("none");
+        if ((new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "s1.mp3")).exists()){
+            Log.e("EXIST", "SONG EXISTS");
+            voicePlayerView5.setAudio(path5);
+        }else{
+            Log.e("DOESNT EXIST", Environment.getExternalStorageDirectory().getPath() + File.separator + "song.mp3");
+        }
+
+        long endTime = System.currentTimeMillis();
+        Log.e("Time", String.valueOf(endTime - startTime));
     }
 
     private void checkPermissions() {
