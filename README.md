@@ -89,7 +89,7 @@ voicePlayerView.setAudio(AUDIO_FILE_PATH);
 ```
 MIT License
 
-Copyright (c) 2019 Jagar Yousef
+Copyright (c) 2019 Cergo123
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
